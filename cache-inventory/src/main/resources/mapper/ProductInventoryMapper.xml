@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bill.mapper.ProductInventoryMapper">
+
+	<!-- 更新库存数量 -->
+	<update id="updateProductInventory" parameterType="ProductInventory">
+		update product_inventory set inventory_cnt = #{inventoryCnt} where product_id = #{productId}
+	</update>
+	
+	<!-- 根据商品 id 获取商品库存信息 -->
+	<select id="getProductInventory" parameterType="Integer" resultType="ProductInventory">
+		select product_id,inventory_cnt from product_inventory where product_id = ${productId}
+	</select>
+</mapper>
