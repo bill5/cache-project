@@ -2,6 +2,7 @@ package com.bill.cache.service.impl;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -76,14 +77,22 @@ public class CacheServiceImpl implements CacheService {
 	public ProductInfo getProductInfoFromRedisCache(Long productId) {
 		String key = "product:info:" + productId;
 		String json = redisDao.get(key);
-		return JSONObject.parseObject(json, ProductInfo.class);
+		if(StringUtils.isNotBlank(json)){
+			return JSONObject.parseObject(json, ProductInfo.class);
+		}else{
+			return null;
+		}
 	}
 
 	@Override
 	public ShopInfo getShopInfoFromRedisCache(Long shopId) {
 		String key = "shop:info:" + shopId;
 		String json = redisDao.get(key);
-		return JSONObject.parseObject(json, ShopInfo.class);
+		if(StringUtils.isNotBlank(json)){
+			return JSONObject.parseObject(json, ShopInfo.class);
+		}else{
+			return null;
+		}
 	}
 
 }

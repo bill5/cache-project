@@ -21,3 +21,4 @@ logging:
     com.bill.mapper: DEBUG
     com.alibaba: INFO
     org.springframework: ERROR
+    com.bill: DEBUG

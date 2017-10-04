@@ -52,12 +52,13 @@ public class CacheCacheApplication {
     *	（6）ehcache通过打印日志方式来观察，redis通过手工连接上去来查询
     *
     *	kafka 创建消息，发布消息
-    *	bin/kafka-topics.sh --zookeeper my-cache1:2181,my-cache2:2181,my-cache3:2181 --topic cache-message --replication-factor 1 --partitions 1 --create
-    *	bin/kafka-console-producer.sh --broker-list my-cache1:9092,my-cache2:9092,my-cache3:9092 --topic cache-message
-    *	bin/kafka-console-consumer.sh --zookeeper my-cache1:2181,my-cache2:2181,my-cache3:2181 --topic cache-message --from-beginning
+    *	cd /usr/local/kafka && bin/kafka-topics.sh --zookeeper my-cache1:2181,my-cache2:2181,my-cache3:2181 --topic cache-message --replication-factor 1 --partitions 1 --create
+    *	cd /usr/local/kafka && bin/kafka-console-producer.sh --broker-list my-cache1:9092,my-cache2:9092,my-cache3:9092 --topic cache-message
+    *	cd /usr/local/kafka && bin/kafka-console-consumer.sh --zookeeper my-cache1:2181,my-cache2:2181,my-cache3:2181 --topic cache-message --from-beginning
     *
     *	{"serviceId":"productInfoService","productId":1}
     *	{"serviceId":"shopInfoService","productId":1,"shopId":1}
+    *
     *
     *   确认是否启动 nginx
     *   	启动：/usr/local/servers/nginx/sbin/nginx
@@ -70,6 +71,13 @@ public class CacheCacheApplication {
     *   
     *   确认是否启动kafka
     *   	启动：cd /usr/local/kafka && nohup bin/kafka-server-start.sh config/server.properties &
+    *   	关闭：cd /usr/local/kafka && nohup bin/kafka-server-stop.sh
+    *   
+    *   
+    *	zookeeper分布式锁测试
+    *	cd /usr/local/kafka && bin/kafka-console-producer.sh --broker-list my-cache1:9092,my-cache2:9092,my-cache3:9092 --topic cache-message
+    *	{"serviceId":"productInfoService","productId":10}
+    *	http://localhost:81/getProductInfo?productId=10
 	*/
 	
 	

@@ -26,11 +26,27 @@ public class ProductInfo {
 	 */
 	private String pictureList;
 	/**
-	 * 。。。
+	 * 商品规格
 	 */
 	private String specification;
+	/**
+	 * 商品售后服务
+	 */
 	private String service;
+	/**
+	 * 商品颜色
+	 */
 	private String color;
+	/**
+	 * 商品大小
+	 */
 	private String size;
+	/**
+	 * 店铺id
+	 */
 	private Long shopId;
+	/**
+	 * 最后更新时间
+	 */
+	private String modifiedTime;
 }

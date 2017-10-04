@@ -7,8 +7,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.alibaba.fastjson.JSONObject;
 import com.bill.cache.bean.ProductInfo;
 import com.bill.cache.bean.ShopInfo;
+import com.bill.cache.rebuild.RebuildCacheQueue;
 import com.bill.cache.service.CacheService;
 
 /**
@@ -18,7 +20,7 @@ import com.bill.cache.service.CacheService;
  */
 @RestController
 public class CacheController {
-	private Logger logger = LoggerFactory.getLogger(this.getClass());
+	private Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 	
 	@Resource
 	private CacheService cacheService;
@@ -45,13 +47,17 @@ public class CacheController {
 		ProductInfo productInfo = null;
 		try {
 			productInfo = cacheService.getProductInfoFromRedisCache(productId);
-			logger.info("=================从redis中获取缓存，商品信息: {}", productInfo); 
+			LOGGER.debug("从redis中获取缓存，商品信息: {}", productInfo); 
 			if(productInfo == null){
 				productInfo = cacheService.getProductInfoFromLocalCache(productId);
-				logger.info("=================从ehcache中获取缓存，商品信息: {}", productInfo);
+				LOGGER.debug("从ehcache中获取缓存，商品信息: {}", productInfo);
 			}
 			if(productInfo == null){
-				//走 数据源重新拉数据并重建缓存
+				//走 数据源重新拉数据并重建缓存,注意这里笔者就直接写死数据了
+				String productInfoJSON = "{\"id\": 10, \"name\": \"iphone7手机\", \"price\": 5599, \"pictureList\":\"a.jpg,b.jpg\", \"specification\": \"iphone7的规格\", \"service\": \"iphone7的售后服务\", \"color\": \"红色,白色,黑色\", \"size\": \"5.5\", \"shopId\": 1, \"modifiedTime\": \"2017-10-3 12:30:01\"}";
+				productInfo = JSONObject.parseObject(productInfoJSON, ProductInfo.class);
+				// 将数据推送到一个内存队列中消费（重建缓存的内存队列）
+				RebuildCacheQueue.getInstance().putProductInfo(productInfo);
 			}
 		} catch (Exception e) {}
 		return productInfo;
@@ -67,10 +73,10 @@ public class CacheController {
 		ShopInfo shopInfo = null;
 		try {
 			shopInfo = cacheService.getShopInfoFromRedisCache(shopId);
-			logger.info("=================从redis中获取缓存，店铺信息: {}", shopInfo);
+			LOGGER.info("从redis中获取缓存，店铺信息: {}", shopInfo);
 			if(shopInfo == null){
 				shopInfo = cacheService.getShopInfoFromLocalCache(shopId);
-				logger.info("=================从ehcache中获取缓存，店铺信息: {}", shopInfo); 
+				LOGGER.info("从ehcache中获取缓存，店铺信息: {}", shopInfo); 
 			}
 			if(shopInfo == null){
 				//走 数据源重新拉数据并重建缓存

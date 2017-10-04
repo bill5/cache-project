@@ -108,6 +108,13 @@
 		    <artifactId>commons-lang3</artifactId>
 		    <version>3.4</version>
 		</dependency>
+		
+		<!-- zookeeper -->
+		<!-- <dependency>
+		    <groupId>org.apache.zookeeper</groupId>
+		    <artifactId>zookeeper</artifactId>
+		    <version>3.4.5</version>
+		</dependency> -->
 	</dependencies>
 
 	<build>
